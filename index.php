@@ -38,28 +38,45 @@
     </div>
 </header>
 
-<main class="container">
+<main class="container">5
     <?php
+    const API_URL = "https://pokeapi.co/api/v2/pokemon/";
 
-  const API_URL = "https://pokeapi.co/api/v2/pokemon/";
-  function callApi (string $query) :array {
-      return json_decode(file_get_contents(API_URL .$query), true);
-  }
+    if (isset($_GET['search'])){
+        $id = $_GET["search"];
+    function getPokemon(string $id): array
+    {
 
+        $poke = json_decode(file_get_contents(API_URL . $id), true);
+        $pokemon = [
+            "name" => $poke["forms"][0]["name"],
+            "image" => $poke["sprites"]["front_default"],
+            "id" => $poke["id"],
+            "moves" => $poke["moves"],
+            "move1" => "moves"[0]["move"]["name"],
+            "move2" => "moves"[1]["move"]["name"] ? true : null,
+            "move3" => "moves"[2]["move"]["name"] ? true : null,
+            "move4" => "moves"[3]["move"]["name"] ? true : null
 
-
+        ];
+        return $pokemon;
+    }
+        getPokemon("$id");
+    }
     ?>
     <section class="row container-fluid" id="pokedex-tpl">
 
         <div class="col-md-6">
             <div class="row search">
                 <label for="search"></label>
-                <form action="get">
-                    <input id="search"  type="text" name="pokemon" placeholder="Pokémon name or ID">
-                     <button type="submit" class="btn btn-warning btn-outline-dark" >Search</button>
+                <form action="" method="get">
+                    <input id="search" type="text" name="search" placeholder="Pokémon name or ID">
+                    <button type="submit" class="btn btn-warning btn-outline-dark">Search
+                    </button>
                 </form>
             </div>
             <div class="row evolution">
+
                 <div class="col-md-3" id="evolution1"><span id="first"></span></div>
                 <div class="col-md-3" id="evolution2"><span id="second"></span></div>
                 <div class="col-md-3" id="evolution3"><span id="third"></span></div>
