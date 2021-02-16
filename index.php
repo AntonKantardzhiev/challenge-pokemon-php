@@ -1,3 +1,29 @@
+<?php
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+const API_URL = "https://pokeapi.co/api/v2/pokemon/";
+
+if (isset($_GET['search'])){
+    $id = $_GET["search"];
+    $poke = json_decode(file_get_contents(API_URL . $id), true);
+    $pokemon = [
+        "name" => $poke["name"],
+        "image" => $poke["sprites"]["front_default"],
+        "id" => $poke["id"],
+        "moves" => array_slice($poke["moves"],0 , 4),
+        "move1" => "moves"[0]["move"]["name"],
+        "move2" => "moves"[1]["move"]["name"] ? true : null,
+        "move3" => "moves"[2]["move"]["name"] ? true : null,
+        "move4" => "moves"[3]["move"]["name"] ? true : null
+
+    ];
+
+
+
+}
+?>
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 
@@ -36,43 +62,18 @@
     <div class="row " id="title">
         <h1 class="mx-auto titlecaption ">Pokemon <img src="img/logo.png" alt="Logo Pokedex "> Database</h1>
     </div>
+
 </header>
 
+
 <main class="container">5
-    <?php
-    const API_URL = "https://pokeapi.co/api/v2/pokemon/";
-
-    if (isset($_GET['search'])){
-        $id = $_GET["search"];
-    function getPokemon(string $id): array
-    {
-
-        $poke = json_decode(file_get_contents(API_URL . $id), true);
-        $pokemon = [
-            "name" => $poke["forms"][0]["name"],
-            "image" => $poke["sprites"]["front_default"],
-            "id" => $poke["id"],
-            "moves" => $poke["moves"],
-            "move1" => "moves"[0]["move"]["name"],
-            "move2" => "moves"[1]["move"]["name"] ? true : null,
-            "move3" => "moves"[2]["move"]["name"] ? true : null,
-            "move4" => "moves"[3]["move"]["name"] ? true : null
-
-        ];
-        return $pokemon;
-    }
-        getPokemon("$id");
-    }
-    ?>
     <section class="row container-fluid" id="pokedex-tpl">
 
         <div class="col-md-6">
             <div class="row search">
-                <label for="search"></label>
                 <form action="" method="get">
-                    <input id="search" type="text" name="search" placeholder="Pokémon name or ID">
-                    <button type="submit" class="btn btn-warning btn-outline-dark">Search
-                    </button>
+                    <label for="search"><input id="search" name="search" placeholder="Pokémon name or ID" type="text">
+                        <button type="submit" class="btn btn-warning btn-outline-dark" id="pressSearch">Search</button></label>
                 </form>
             </div>
             <div class="row evolution">
@@ -83,26 +84,25 @@
             </div>
         </div>
         <div class="col-md-6 " id="pokemons">
-            <div class="row pokemon-img " id="pokemon-img" src="" alt="pokemon image"></div>
-            <div class="row data2" id="name"></div>
-            <div class="row data2" id="id"></div>
-            <div class="row data2" id="abilities"></div>
+            <div class="row pokemon-img" id="pokemon-img"><?php echo "<img src='".$pokemon["image"]."'>"; ?></div>
+            <div class="row data2" id="name"><?php echo $pokemon["name"]; ?></div>
+            <div class="row data2" id="id"><?php echo $pokemon["id"]; ?></div>
 
             <table id="movestable">
                 <tr>
                     <td>
-                        <div class="row data2" id="move1"></div>
+                        <div class="row data2" id="move1"><?php echo $pokemon["move1"]; ?></div>
                     </td>
                     <td>
-                        <div class="row data2" id="move2"></div>
+                        <div class="row data2" id="move2"><?php echo $pokemon["move2"]; ?></div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <div class="row data2" id="move3"></div>
+                        <div class="row data2" id="move3"><?php echo $pokemon["move3"]; ?></div>
                     </td>
                     <td>
-                        <div class="row data2" id="move4"></div>
+                        <div class="row data2" id="move4"><?php echo $pokemon["move4"]; ?></div>
                     </td>
                 </tr>
             </table>
