@@ -71,7 +71,7 @@ if (isset($_GET['search'])){
 
         <div class="col-md-6">
             <div class="row search">
-                <form action="" method="get">
+                <form action="index.php" method="get">
                     <label for="search"><input id="search" name="search" placeholder="Pokémon name or ID" type="text">
                         <button type="submit" class="btn btn-warning btn-outline-dark" id="pressSearch">Search</button></label>
                 </form>
