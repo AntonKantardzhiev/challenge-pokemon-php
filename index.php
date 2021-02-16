@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 const API_URL = "https://pokeapi.co/api/v2/pokemon/";
 
 if (isset($_GET['search'])){
-    $id = $_GET["search"];
+    $id = htmlspecialchars($_GET["search"],ENT_NOQUOTES, "UTF-8");
     $poke = json_decode(file_get_contents(API_URL . $id), true);
     $pokemon = [
         "name" => $poke["name"],
